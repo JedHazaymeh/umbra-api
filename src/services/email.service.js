@@ -8,7 +8,9 @@ if (config.env !== 'test') {
   transport
     .verify()
     .then(() => logger.info('Connected to email server'))
-    .catch(() => logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env'));
+    .catch(() =>
+      logger.warn('Unable to connect to email server. Make sure you have configured the SMTP options in .env')
+    );
 }
 
 /**
@@ -30,12 +32,12 @@ const sendEmail = async (to, subject, text) => {
  * @returns {Promise}
  */
 const sendResetPasswordEmail = async (to, token) => {
-  const subject = 'Reset password';
+  const subject = 'Reset Password';
   // replace this url with the link to the reset password page of your front-end app
-  const resetPasswordUrl = `http://link-to-app/reset-password?token=${token}`;
+  const resetPasswordUrl = `${config.appUrl}/auth/reset-password/${token}`;
   const text = `Dear user,
 To reset your password, click on this link: ${resetPasswordUrl}
-If you did not request any password resets, then ignore this email.`;
+If you did not request any password resets, you can ignore this email.`;
   await sendEmail(to, subject, text);
 };
 
@@ -46,12 +48,12 @@ If you did not request any password resets, then ignore this email.`;
  * @returns {Promise}
  */
 const sendVerificationEmail = async (to, token) => {
-  const subject = 'Email Verification';
+  const subject = 'Verify Your Email';
   // replace this url with the link to the email verification page of your front-end app
-  const verificationEmailUrl = `http://link-to-app/verify-email?token=${token}`;
+  const verificationEmailUrl = `${config.appUrl}/auth/verify-email/${token}`;
   const text = `Dear user,
 To verify your email, click on this link: ${verificationEmailUrl}
-If you did not create an account, then ignore this email.`;
+If you did not create an account, you can ignore this email.`;
   await sendEmail(to, subject, text);
 };
 
@@ -59,5 +61,5 @@ module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
-  sendVerificationEmail,
+  sendVerificationEmail
 };

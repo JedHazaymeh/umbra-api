@@ -9,6 +9,8 @@ const envVarsSchema = Joi.object()
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
+    APP_URL: Joi.string().required().description('Frontend app url'),
+    APP_DEV_URL: Joi.string().required().description('Frontend app dev url'),
     KINGUIN: Joi.string().required().description('Kinguin access key'),
     JWT_SECRET: Joi.string().required().description('JWT secret key'),
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
@@ -44,6 +46,7 @@ module.exports = {
       useUnifiedTopology: true
     }
   },
+  appUrl: envVars.NODE_ENV === 'production' ? envVars.APP_URL : envVars.APP_DEV_URL,
   kinguin: envVars.KINGUIN,
   jwt: {
     secret: envVars.JWT_SECRET,
